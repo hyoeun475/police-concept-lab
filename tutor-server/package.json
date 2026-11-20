@@ -1,0 +1,10 @@
+{
+  "name": "police-concept-lab-tutor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Police Concept Lab 웹앱과 AI 튜터 API를 함께 제공하는 서버",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": { "@anthropic-ai/sdk": "latest" }
+}
