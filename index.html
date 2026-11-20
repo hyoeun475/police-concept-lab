@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Police Concept Lab · 형식적·실질적 의미의 경찰</title>
+<meta name="description" content="사례로 판단해 보는 형식적 의미의 경찰과 실질적 의미의 경찰. 경찰학 수업용 학습도구.">
+<style>
+:root{
+  --navy:#12264A; --blue:#2F6FD0; --teal:#0E9C9C;
+  --blue-soft:#E8F0FC; --teal-soft:#E0F4F3; --navy-soft:#E7EAF1;
+  --bg:#F4F6F9; --card:#FFFFFF; --ink:#1B2433; --muted:#5B6676; --line:#D8DEE8;
+  --ok:#1F8A5B; --ok-soft:#E3F4EC; --no:#C8442F; --no-soft:#FBE9E5; --debate:#8A5A00; --debate-soft:#FBF1DA;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"KoPubDotum Light","KoPub돋움체 Light","Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+  font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+b,strong,h1,h2,h3,.b{font-family:"KoPubDotum Bold","KoPub돋움체 Bold","Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;font-weight:700}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+header.top{background:var(--navy);color:#fff}
+header.top .wrap{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-top:14px;padding-bottom:12px}
+header.top h1{font-size:20px;margin:0;letter-spacing:.2px}
+header.top p{margin:0;font-size:13px;color:#C9D3E6}
+nav.tabs{background:var(--navy);position:sticky;top:0;z-index:20}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs .wrap::-webkit-scrollbar{display:none}
+nav.tabs button{flex:1 0 auto;background:transparent;border:0;color:#C9D3E6;padding:10px 12px 12px;font-size:15px;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:#fff;border-bottom-color:#5FD3D0}
+nav.tabs button:focus-visible,.btn:focus-visible,.opt:focus-visible,.chip:focus-visible,.sent:focus-visible{outline:3px solid #5FD3D0;outline-offset:2px}
+main{padding:18px 0 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.lead{color:var(--muted);font-size:14.5px;margin:0 0 12px}
+h2{font-size:19px;margin:0 0 6px;color:var(--navy)}
+h3{font-size:16px;margin:0 0 8px;color:var(--navy)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;font-size:12.5px;padding:2px 9px;border-radius:999px;background:var(--navy-soft);color:var(--navy)}
+.tag.debate{background:var(--debate-soft);color:var(--debate)}
+.tag.f{background:var(--blue-soft);color:var(--blue)} .tag.s{background:var(--teal-soft);color:#087878}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0}
+.chip{min-width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:14px;padding:0 6px}
+.chip.cur{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip.ok{border-color:var(--ok);color:var(--ok)} .chip.no{border-color:var(--no);color:var(--no)} .chip.dbt{border-color:#C99A2E;color:var(--debate)}
+.chip.cur.ok,.chip.cur.no,.chip.cur.dbt{color:#fff}
+.case-text{font-size:20px;line-height:1.55;margin:10px 0 4px;color:var(--ink)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.opt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:13px 12px;text-align:left;font-size:16.5px;min-height:56px;display:flex;align-items:center;gap:10px}
+.opt .dot{flex:none;width:14px;height:14px;border-radius:50%}
+.opt[data-v="F"] .dot{background:var(--blue)} .opt[data-v="S"] .dot{background:var(--teal)}
+.opt[data-v="B"] .dot{background:var(--navy)} .opt[data-v="N"] .dot{background:#fff;border:2px solid #9AA5B5}
+.opt.sel{border-color:var(--navy);background:var(--navy-soft)}
+.opt:disabled{cursor:default;opacity:1}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)} .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.checks{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.checks .grp{font-size:13.5px;color:var(--muted);margin:8px 0 4px}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:7px 4px;font-size:15.5px}
+.chk input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--navy);flex:none}
+.btn{border:0;border-radius:11px;background:var(--navy);color:#fff;padding:12px 18px;font-size:16px}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn:disabled{background:#AEB7C6;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.verdict{border-radius:12px;padding:13px 15px;font-size:17px;margin-bottom:12px}
+.verdict.ok{background:var(--ok-soft);color:#14603F} .verdict.no{background:var(--no-soft);color:#8F2C1C} .verdict.dbt{background:var(--debate-soft);color:#6B4600}
+.verdict small{display:block;font-size:14.5px;margin-top:3px;font-family:inherit;font-weight:400}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.panel{border-radius:12px;padding:13px 14px;border:1px solid var(--line);background:#fff}
+.panel.f{background:var(--blue-soft);border-color:#C4D8F6} .panel.s{background:var(--teal-soft);border-color:#B5E3E0}
+.panel.miss{box-shadow:0 0 0 3px var(--no) inset}
+.panel h3{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.panel.f h3{color:#1F56AD} .panel.s h3{color:#087878}
+.panel p{margin:6px 0 0;font-size:15px}
+.ox{font-size:13.5px;padding:2px 9px;border-radius:999px;background:#fff;border:1px solid currentColor;white-space:nowrap}
+.misslabel{color:var(--no);font-size:13.5px;margin-top:6px}
+table.crit{width:100%;border-collapse:collapse;margin-top:9px;font-size:14px;background:#fff;border-radius:8px;overflow:hidden}
+table.crit th,table.crit td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.crit th{font-size:12.5px;color:var(--muted);font-weight:400;font-family:inherit}
+table.crit td.c{text-align:center;white-space:nowrap}
+table.crit tr.bad td{background:var(--no-soft)}
+.law{font-size:14px;color:var(--muted);margin-top:12px}
+.law b{color:var(--ink)}
+.note{font-size:14px;background:#fff;border:1px dashed #9AA5B5;border-radius:10px;padding:9px 12px;margin-top:10px}
+.note.misc ul,.tutor ul{margin:6px 0 0;padding-left:20px}
+.note.misc li,.tutor li{margin-top:5px}
+textarea.reason{width:100%;font:inherit;color:inherit;border:2px solid var(--line);border-radius:10px;padding:9px 11px;resize:vertical;background:#fff}
+textarea.reason:focus-visible{outline:3px solid #5FD3D0;outline-offset:2px}
+.tutor{border:1.5px solid var(--navy);border-radius:12px;padding:13px 15px;margin-top:12px;background:#fff}
+.tutor h3{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.tutor p{margin:6px 0 0;font-size:15.5px}
+.tutor .mine{color:var(--muted);font-size:14px}
+.tutor .ai{font-size:16.5px}
+.linkbtn{background:none;border:0;padding:0;color:var(--blue);text-decoration:underline;font-size:inherit}
+.q{background:var(--navy);color:#fff;border-radius:12px;padding:13px 15px;margin-top:12px;font-size:16px}
+.q small{display:block;color:#B9C6DE;font-size:12.5px;margin-bottom:2px}
+/* Venn */
+.venn-wrap{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+svg.venn{width:100%;height:auto;display:block;touch-action:manipulation;border-radius:12px}
+svg.venn text{font-family:inherit;pointer-events:none}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.vcard{border:2px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;font-size:15px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;text-align:left}
+.vcard.sel{border-color:var(--navy);background:var(--navy-soft)}
+.vcard.ghost{position:fixed;z-index:99;pointer-events:none;box-shadow:0 8px 22px rgba(18,38,74,.28);transform:translate(-50%,-60%);max-width:240px}
+.vlog{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:7px}
+.vlog li{border-radius:10px;padding:8px 11px;font-size:14.5px}
+.vlog li.ok{background:var(--ok-soft)} .vlog li.no{background:var(--no-soft)}
+.hint{font-size:13.5px;color:var(--muted);margin:8px 0}
+.zonepulse{animation:pulse .9s ease-out 2}
+@keyframes pulse{0%{opacity:1}50%{opacity:.35}100%{opacity:1}}
+/* Essay */
+.banner{background:var(--debate-soft);color:#6B4600;border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.essay{font-size:17px;line-height:1.75}
+.sent{display:inline;background:none;border:0;padding:2px 1px;text-align:left;border-bottom:2px dotted #9AA5B5;border-radius:3px}
+.sent.err{background:var(--no-soft);border-bottom:2px solid var(--no)}
+.sent.fine{background:var(--ok-soft);border-bottom:2px solid var(--ok)}
+.sent.reveal{background:#FFF3C9;border-bottom:2px solid #C99A2E}
+.fb{margin-top:10px;display:grid;gap:7px}
+.fb div{border-radius:10px;padding:8px 11px;font-size:14.5px}
+.fb .err{background:var(--no-soft)} .fb .fine{background:var(--ok-soft)} .fb .reveal{background:#FFF3C9}
+/* Result */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}
+.stat .n{font-size:28px;color:var(--navy);line-height:1.2}
+.stat .l{font-size:13.5px;color:var(--muted)}
+.bar{height:12px;border-radius:99px;background:var(--navy-soft);overflow:hidden;margin:4px 0 10px}
+.bar i{display:block;height:100%}
+.advice{border-radius:12px;padding:12px 14px;margin-top:10px;font-size:15.5px}
+footer{color:var(--muted);font-size:12.5px;padding:0 0 28px}
+@media (max-width:640px){
+  .two,.venn-wrap{grid-template-columns:1fr}
+  .opts{grid-template-columns:1fr}
+  .case-text{font-size:18.5px}
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  .stat .n{font-size:22px}
+  .card{padding:15px}
+}
+@media (min-width:1100px){
+  body{font-size:17.5px} .case-text{font-size:24px} .opt{font-size:18.5px} .wrap{max-width:1080px}
+  .panel p{font-size:16.5px} .chk{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){.zonepulse{animation:none}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>Police Concept Lab</h1>
+  <p>형식적 의미의 경찰 · 실질적 의미의 경찰 — 외우지 말고, 사례로 판단하기</p>
+</div></header>
+<nav class="tabs" aria-label="학습 모드"><div class="wrap" role="tablist">
+  <button role="tab" data-tab="A" aria-selected="true">사례 판단</button>
+  <button role="tab" data-tab="D" aria-selected="false">심화 사례</button>
+  <button role="tab" data-tab="B" aria-selected="false">벤다이어그램 배치</button>
+  <button role="tab" data-tab="C" aria-selected="false">AI 답안 비평</button>
+  <button role="tab" data-tab="R" aria-selected="false">결과</button>
+</div></nav>
+<main><div class="wrap" id="app"></div></main>
+<footer><div class="wrap">
+  경찰학 수업용 학습도구 · Claude Code로 직접 개발 · <span id="aiNote">실시간 AI 호출 없음(모든 사례와 해설은 사전에 작성해 내장)</span> ·
+  학습 기록은 이 화면 안에서만 유지되며 저장·전송되지 않습니다.
+</div></footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   1. 사례 데이터  ―  교수자 수정 영역
+   ---------------------------------------------------------------------
+   사례를 추가·수정하려면 아래 CASES 배열만 고치면 됩니다.
+   key          : 고유 이름(영문). 다른 사례에서 see 로 참조할 때 사용
+   short        : 벤다이어그램 카드에 쓰는 짧은 이름
+   text         : 사례 문장
+   formal       : 형식적 의미의 경찰 해당 여부 (true / false)
+   substantive  : 실질적 의미의 경찰 해당 여부 (true / false / "debate")
+   type         : "확정형" 또는 "논쟁형" (논쟁형은 채점하지 않음)
+   formalWhy    : 형식적(조직) 기준 해설
+   substantiveWhy : 실질적(작용) 기준 해설
+   criteria     : 실질적 의미의 네 표지. true=충족, false=불충족, null=이 사례에서 결정적이지 않음
+                  purpose(사회공공의 위험방지 목적) / future(장래지향) / general(일반통치권) / power(명령·강제)
+   law          : 근거 법령
+   level        : 난이도 1(기본) ~ 3(심화)
+   see          : (선택) 함께 볼 사례의 key
+   traditional, modern, question : (논쟁형 전용) 전통적 개념 / 현대적 논의 / 생각해 볼 질문
+   ===================================================================== */
+const CASES = [
+  { key:"traffic", short:"경찰관의 교통 위험방지 조치",
+    text:"교통사고로 도로에 기름이 쏟아지자, 교통경찰관이 2차 사고를 막기 위해 해당 차로의 통행을 금지하고 차량을 우회시켰다.",
+    formal:true, substantive:true, type:"확정형", level:1,
+    formalWhy:"교통의 단속과 위해 방지는 법률이 보통경찰기관(경찰청·시도경찰청·경찰서)에 맡긴 임무입니다. 경찰관이 그 소관 사무를 수행했으므로 형식적 의미의 경찰입니다.",
+    substantiveWhy:"도로 위의 위험이라는 사회공공의 안녕에 대한 위험을, 앞으로 사고가 나지 않도록(장래), 통행금지라는 명령·강제로 막는 작용입니다. 네 표지를 모두 충족합니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"국가경찰과 자치경찰의 조직 및 운영에 관한 법률 제3조, 경찰관 직무집행법 제2조·제5조, 도로교통법 제6조 제4항" },
+  { key:"stop", short:"범죄예방 목적의 불심검문",
+    text:"심야 주택가에서 담장 안을 살피며 서성이는 사람을 발견한 지구대 경찰관이, 범죄를 예방하기 위해 그를 정지시켜 질문했다.",
+    formal:true, substantive:true, type:"확정형", level:2,
+    formalWhy:"범죄의 예방은 보통경찰기관의 법정 임무이고, 불심검문은 경찰관 직무집행법이 경찰관에게 준 권한입니다.",
+    substantiveWhy:"아직 일어나지 않은 범죄라는 위험을 막기 위해(장래·위험방지) 경찰권에 근거해 상대방을 정지시키는 작용입니다. 다만 이미 일어난 범죄의 범인을 찾기 위한 검문이라면 수사의 단서 확보라는 성격이 강해지므로, 같은 불심검문이라도 목적에 따라 평가가 달라집니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"경찰관 직무집행법 제2조·제3조" },
+  { key:"autotraffic", short:"자치경찰의 교통법규 위반 지도·단속",
+    text:"자치경찰사무를 맡은 경찰관이 어린이보호구역에서 신호위반·과속 차량을 지도·단속했다.",
+    formal:true, substantive:true, type:"확정형", level:2,
+    formalWhy:"교통법규 위반에 대한 지도·단속은 법률이 자치경찰사무로 정한 경찰의 사무입니다. 자치경찰도 보통경찰기관의 사무를 수행하므로 형식적 의미의 경찰입니다.",
+    substantiveWhy:"교통상의 위험을 막기 위해 운전자에게 명령·강제하는 위험방지 작용이므로 실질적 의미의 경찰에도 해당합니다. (기출 지문은 이 사례의 '형식적 의미' 해당 여부를 물었습니다.)",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"국가경찰과 자치경찰의 조직 및 운영에 관한 법률 제4조 제1항 제2호 나목, 도로교통법" },
+  { key:"hygiene", short:"구청 공무원의 식품위생 시정명령", see:"sje",
+    text:"구청 위생과 공무원이 음식점 조리시설의 비위생 상태를 확인하고, 식중독 위험을 막기 위해 시설 개선 시정명령을 내렸다.",
+    formal:false, substantive:true, type:"확정형", level:1,
+    formalWhy:"구청은 보통경찰기관이 아닙니다. 다른 행정기관이 자기 소관 사무로 하는 작용은 형식적 의미의 경찰에 포함되지 않습니다.",
+    substantiveWhy:"위생상 위험으로부터 공중의 건강을 지키기 위해(위험방지) 영업자에게 의무를 부과하는 명령입니다. 다른 행정기관이 자기 사무에 부수해 하는 위험방지 작용, 곧 협의의 행정경찰(위생경찰)의 대표 사례입니다. 권한의 근거는 '실질적 경찰'이라는 개념이 아니라 식품위생법이라는 개별 법률입니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"식품위생법 제71조(시정명령)" },
+  { key:"sje", short:"특사경 지명 공무원의 위반사건 수사·송치", see:"hygiene",
+    text:"앞 사례의 구청 공무원은 특별사법경찰관리로 지명되어 있다. 그가 유통기한을 위조한 식품을 판 업주를 식품위생법 위반으로 입건해 수사하고 사건을 송치했다.",
+    formal:false, substantive:false, type:"확정형", level:3,
+    formalWhy:"수사를 했더라도 그는 구청 소속 공무원이고, 이 수사는 보통경찰기관의 사무가 아닙니다. 이름에 '경찰'이 들어 있다고 형식적 의미의 경찰이 되지는 않습니다.",
+    substantiveWhy:"이미 일어난 범죄의 범인과 증거를 찾아 형사책임을 묻기 위한 사법경찰 작용입니다. 장래의 위험방지가 아니므로 전통적인 실질적 의미의 경찰에 해당하지 않습니다. 같은 공무원의 시정명령(앞 사례)은 실질적 의미의 경찰이었습니다. 분류 단위는 사람이나 기관이 아니라 '작용'입니다.",
+    criteria:{purpose:false,future:false,general:null,power:null},
+    law:"사법경찰관리의 직무를 수행할 자와 그 직무범위에 관한 법률 제5조 제8호·제6조 제6호" },
+  { key:"building", short:"구청 공무원의 위험 건축물 사용제한 명령",
+    text:"구청 공무원이 붕괴 위험이 확인된 노후 건축물에 사용제한 명령을 내렸다.",
+    formal:false, substantive:true, type:"확정형", level:1,
+    formalWhy:"명령을 내린 기관은 구청입니다. 보통경찰기관의 소관 사무가 아니므로 형식적 의미의 경찰이 아닙니다.",
+    substantiveWhy:"붕괴라는 위험으로부터 사람의 생명·신체를 지키기 위해(소극목적), 앞으로의 사고를 막으려고(장래), 소유자·이용자에게 사용제한 의무를 부과하는(명령·강제) 작용입니다. 건축경찰이라 부르는 협의의 행정경찰입니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"건축물관리법 제21조(사용제한 등), 시설물의 안전 및 유지관리에 관한 특별법 제23조(긴급안전조치)" },
+  { key:"forest", short:"산불 위험지역 입산통제",
+    text:"건조특보가 내려지자 산림 당국이 산불 위험이 큰 구역을 입산통제구역으로 지정하고 출입을 막았다.",
+    formal:false, substantive:true, type:"확정형", level:1,
+    formalWhy:"산림 행정기관의 작용입니다. 보통경찰기관의 소관 사무가 아닙니다.",
+    substantiveWhy:"산불이라는 위험을 미리 막기 위해 일반 국민의 출입을 금지하는 작용으로, 산림경찰이라 부르는 협의의 행정경찰입니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"산림보호법 제15조(입산통제구역의 지정 등)" },
+  { key:"epidemic", short:"감염병 예방을 위한 시설 폐쇄명령",
+    text:"보건당국이 감염병 확산을 막기 위해 집단감염이 발생한 시설에 일시 폐쇄명령을 내렸다.",
+    formal:false, substantive:true, type:"확정형", level:1,
+    formalWhy:"질병관리청장, 시·도지사, 시장·군수·구청장 등 보건당국의 작용입니다. 보통경찰기관의 소관 사무가 아닙니다.",
+    substantiveWhy:"감염병이라는 보건상 위험이 퍼지는 것을 막기 위해 시설 관리자에게 폐쇄 의무를 부과하는 작용으로, 보건경찰이라 부르는 협의의 행정경찰입니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"감염병의 예방 및 관리에 관한 법률 제47조(감염병 유행에 대한 방역 조치)" },
+  { key:"theft", short:"경찰 수사관의 절도사건 증거수집",
+    text:"경찰서 형사과 수사관이 어젯밤 일어난 편의점 절도사건의 범인을 찾기 위해 CCTV 영상과 지문을 수집했다.",
+    formal:true, substantive:false, type:"확정형", level:1,
+    formalWhy:"범죄의 수사는 법률이 보통경찰기관에 맡긴 임무입니다. 사복을 입었는지와 관계없이 형식적 의미의 경찰입니다.",
+    substantiveWhy:"이미 일어난 범죄에 대해 형사책임을 묻기 위한 사법경찰 작용입니다. 장래의 위험을 막는 작용이 아니고, 형사소송법이 규율하는 형사사법 작용이므로 전통적인 실질적 의미의 경찰과 구별됩니다.",
+    criteria:{purpose:false,future:false,general:null,power:null},
+    law:"국가경찰과 자치경찰의 조직 및 운영에 관한 법률 제3조, 경찰관 직무집행법 제2조, 형사소송법" },
+  { key:"escort", short:"경찰관의 귀가 지원 서비스",
+    text:"늦은 밤 귀가하던 주민의 요청으로, 지구대 경찰관이 집 앞까지 동행해 주었다.",
+    formal:true, substantive:false, type:"논쟁형", level:2,
+    formalWhy:"국민의 생명·신체 보호와 범죄 예방을 위한 경찰서비스로, 경찰관이 경찰의 소관 사무로 수행한 활동입니다. 형식적 의미의 경찰에 해당한다는 데는 다툼이 없습니다.",
+    substantiveWhy:"상대방의 요청과 동의에 따른 서비스이고 명령·강제가 없습니다.",
+    criteria:{purpose:true,future:true,general:null,power:false},
+    law:"국가경찰과 자치경찰의 조직 및 운영에 관한 법률 제3조, 경찰관 직무집행법 제2조",
+    traditional:"전통적 개념은 실질적 의미의 경찰을 '명령·강제하는 권력적 작용'으로 한정합니다. 귀가 지원은 비권력적 서비스이므로 실질적 의미의 경찰에 해당하지 않습니다. → 형식적 경찰만",
+    modern:"위험방지라는 목적을 중심으로 보면, 범죄 피해 위험을 줄이는 이 활동도 위험방지 작용입니다. 수단이 비권력적이라는 이유만으로 경찰개념에서 빼는 것이 타당한지 다시 묻는 논의가 있습니다.",
+    question:"실질적 의미의 경찰을 가르는 핵심은 '수단'(명령·강제)일까요, '목적'(위험방지)일까요?" },
+  { key:"intel", short:"경찰의 비권력적 정보수집·보고",
+    text:"경찰 정보관이 대규모 행사를 앞두고 공개 자료와 관계자 면담으로 정보를 수집해 보고서를 작성했다. 누구에게도 의무를 부과하거나 강제하지 않았다.",
+    formal:true, substantive:false, type:"확정형", level:3,
+    formalWhy:"정보의 수집·작성·배포는 법률이 보통경찰기관의 직무로 정한 사무입니다.",
+    substantiveWhy:"상대방에게 명령하거나 강제하지 않는 비권력적 활동입니다. 그래서 전통적 분류는 정보경찰을 형식적 의미의 경찰에만 해당하는 작용으로 봅니다. 모든 정보활동이 그렇다는 뜻은 아닙니다. 구체적인 작용의 목적과 수단에 따라 따져야 합니다.",
+    criteria:{purpose:null,future:true,general:null,power:false},
+    law:"경찰관 직무집행법 제2조·제8조의2" },
+  { key:"sio", short:"중대범죄수사청 수사관의 범죄수사",
+    text:"중대범죄수사청 소속 수사관이 대형 경제범죄 사건을 수사했다.",
+    formal:false, substantive:false, type:"확정형", level:3,
+    formalWhy:"형식적 의미의 경찰은 보통경찰기관의 소관 사무를 기준으로 합니다. 중대범죄수사청은 경찰청과 별개의 기관이므로, 같은 '수사'라도 형식적 의미의 경찰이 아닙니다. 형식적 의미의 경찰의 범위는 입법정책에 따라 달라집니다.",
+    substantiveWhy:"수사는 이미 일어난 범죄에 대한 사법경찰 작용이므로 전통적인 실질적 의미의 경찰에도 해당하지 않습니다.",
+    criteria:{purpose:false,future:false,general:null,power:null},
+    law:"중대범죄수사청 조직 및 운영에 관한 법률 제3조·제4조·제12조, 정부조직법 제37조" },
+  { key:"assembly", short:"국회 경위의 회의장 경호",
+    text:"국회 경위가 국회의장의 지휘를 받아 본회의장 안에서 질서를 유지하고 경호 업무를 수행했다.",
+    formal:false, substantive:false, type:"확정형", level:3,
+    formalWhy:"국회 경위는 국회 소속 공무원이고, 보통경찰기관이 아닙니다.",
+    substantiveWhy:"국회의장의 경호권은 국회라는 조직 내부의 질서를 유지하기 위한 권한(의원경찰)입니다. 일반 국민을 상대로 하는 일반통치권에 근거한 작용이 아니므로 실질적 의미의 경찰과 구별됩니다.",
+    criteria:{purpose:null,future:null,general:false,power:null},
+    law:"국회법 제143조·제144조" },
+  { key:"court", short:"재판장의 법정질서 유지",
+    text:"재판장이 법정에서 소란을 피운 방청인에게 퇴정을 명했다.",
+    formal:false, substantive:false, type:"확정형", level:3,
+    formalWhy:"재판장은 법원 소속으로, 보통경찰기관이 아닙니다.",
+    substantiveWhy:"법정의 질서유지는 재판을 원활히 진행하기 위해 재판장에게 주어진 권한(법정경찰)으로, 사법권에 부수하는 작용입니다. 일반통치권에 근거한 위험방지 작용이 아니므로 실질적 의미의 경찰과 구별됩니다.",
+    criteria:{purpose:null,future:null,general:false,power:null},
+    law:"법원조직법 제58조" },
+  { key:"guard", short:"민간경비원의 계약상 경비활동",
+    text:"쇼핑몰과 계약한 경비업체의 경비원이 매장을 순찰하며 도난과 화재를 감시했다.",
+    formal:false, substantive:false, type:"확정형", level:1,
+    formalWhy:"민간 경비업체 직원은 행정기관이 아닙니다.",
+    substantiveWhy:"위험을 막는 일이라는 점은 비슷하지만, 근거가 국가의 일반통치권이 아니라 고객과 맺은 계약입니다. 국민에게 명령·강제할 공권력도 없습니다. 그래서 실질적 의미의 경찰이 아닙니다.",
+    criteria:{purpose:null,future:true,general:false,power:false},
+    law:"경비업법 제2조·제7조·제15조의2" },
+  { key:"ai", short:"경찰의 AI 영상분석을 통한 위험 예측",
+    text:"경찰이 AI 영상분석 시스템으로 CCTV 영상을 분석해 범죄 위험이 높은 시간과 장소를 예측하고 순찰 경로에 반영했다. 특정인에게 명령하거나 강제하지는 않았다.",
+    formal:true, substantive:"debate", type:"논쟁형", level:3,
+    formalWhy:"경찰이 범죄 예방이라는 소관 사무로 수행한 활동입니다. AI를 썼는지와 관계없이 형식적 의미의 경찰에 해당합니다.",
+    substantiveWhy:"목적은 장래의 위험방지이지만, 명령·강제라는 수단이 없습니다.",
+    criteria:{purpose:true,future:true,general:null,power:"debate"},
+    law:"경찰관 직무집행법 제2조, 개인정보 보호법, 인공지능 발전과 신뢰 기반 조성 등에 관한 기본법 제2조 제4호, 경찰청 인공지능의 개발 및 활용에 관한 규칙(경찰청훈령 제1209호)",
+    traditional:"명령도 강제도 없는 정보의 수집·분석이므로 '권력적 작용'이 아닙니다. 전통적 표지에 따르면 실질적 의미의 경찰에 해당하지 않습니다. → 형식적 경찰만",
+    modern:"명령·강제가 없어도 대량의 영상정보 수집·분석은 개인정보자기결정권 같은 기본권을 제약할 수 있습니다. 위험방지 목적의 기본권 제약 작용이라는 점에 주목하면, 전통적 표지만으로는 이 활동을 통제의 틀 안에 담기 어렵다는 문제가 제기됩니다.",
+    question:"경찰개념의 기준을 '명령·강제가 있었는가'에서 '기본권을 제약하는가'로 옮겨야 할까요?" }
+];
+
+/* 심화 사례: 단일 정답보다 법적 해석이 중요한 문항. 모두 논쟁형(채점하지 않음).
+   필드는 CASES 와 같고, viewTitles 로 두 관점 칸의 제목을 바꿀 수 있습니다. */
+const ADV_CASES = [
+  { key:"victim", short:"경찰의 범죄피해자 지원",
+    text:"가정폭력 신고 사건에서 경찰서의 피해자 보호 담당 경찰관이 피해자에게 임시숙소와 상담기관을 연계해 주었다. 피해자가 원해서 이루어진 지원이고, 누구에게도 명령하거나 강제하지 않았다.",
+    formal:true, substantive:"debate", type:"논쟁형", level:3,
+    formalWhy:"범죄피해자 보호는 경찰관 직무집행법이 경찰관의 직무로 정한 사무입니다. 경찰이 소관 사무로 수행했으므로 형식적 의미의 경찰입니다.",
+    substantiveWhy:"다시 피해를 입을 위험을 막으려는 목적은 있지만, 상대방의 의사에 따른 지원이고 명령·강제가 없습니다.",
+    criteria:{purpose:true,future:true,general:null,power:false},
+    law:"경찰관 직무집행법 제2조 제2호의2, 범죄피해자 보호법, 가정폭력범죄의 처벌 등에 관한 특례법 제8조의2",
+    viewTitles:["전통적 표지를 적용하면","더 생각해 볼 점"],
+    traditional:"명령·강제가 없는 비권력적 지원이므로 실질적 의미의 경찰에 해당하지 않습니다. → 형식적 경찰만",
+    modern:"같은 사건에서 경찰관이 가해자에게 접근금지 같은 긴급임시조치를 한다면, 그것은 상대방에게 의무를 지우는 명령·강제 작용입니다. 재피해를 막는다는 목적은 같은데, 수단에 따라 한 활동은 실질적 경찰개념 안에, 다른 활동은 밖에 놓입니다.",
+    question:"목적이 같은 두 활동을 수단만으로 다르게 분류하는 것은 타당할까요?" },
+  { key:"festival", short:"구청의 지역축제 안전관리 권고",
+    text:"구청 안전관리 부서가 지역축제를 앞두고 주최 측이 낸 안전관리계획을 검토한 뒤, 인파가 몰릴 구간에 안전요원을 더 배치하라고 권고했다. 따르지 않아도 제재는 없다.",
+    formal:false, substantive:"debate", type:"논쟁형", level:3,
+    formalWhy:"구청은 보통경찰기관이 아닙니다. 다른 행정기관이 자기 소관 사무로 한 활동이므로 형식적 의미의 경찰이 아닙니다.",
+    substantiveWhy:"인파 사고라는 위험을 미리 막으려는 활동이지만, 권고는 상대방에게 의무를 지우지 않습니다.",
+    criteria:{purpose:true,future:true,general:null,power:false},
+    law:"재난 및 안전관리 기본법 제41조(위험구역의 설정), 제66조의11(지역축제 개최 시 안전관리조치)",
+    viewTitles:["전통적 표지를 적용하면","더 생각해 볼 점"],
+    traditional:"의무를 부과하지 않는 권고(행정지도)는 명령·강제가 아닙니다. 전통적 표지에 따르면 실질적 의미의 경찰에 해당하지 않습니다. → 둘 다 해당하지 않음",
+    modern:"축제 당일 사고 위험이 커져 구청장이 위험구역을 설정하고 출입을 제한한다면, 그것은 다른 행정기관의 위험방지 명령으로 실질적 의미의 경찰(협의의 행정경찰)에 해당합니다. 같은 기관이 같은 목적으로 한 활동이 단계에 따라 다르게 분류됩니다.",
+    question:"위험방지 행정에서 '권고'와 '명령'의 경계는 어디일까요? 사실상 따를 수밖에 없는 권고는 어떻게 보아야 할까요?" },
+  { key:"aistop", short:"AI 위험예측에 따른 불심검문",
+    text:"AI 분석 시스템이 범죄 위험이 높다고 표시한 구역에서, 순찰 경찰관이 그곳을 지나던 사람을 정지시켜 질문했다. 그 사람에게 따로 수상한 행동은 없었다.",
+    formal:true, substantive:true, type:"논쟁형", level:3,
+    formalWhy:"범죄 예방을 위한 불심검문은 경찰관 직무집행법이 경찰관에게 준 권한이고, 보통경찰기관의 소관 사무입니다.",
+    substantiveWhy:"장래의 범죄라는 위험을 막기 위해 상대방을 정지시키는 작용입니다. 개념 분류로는 네 표지를 충족합니다.",
+    criteria:{purpose:true,future:true,general:true,power:true},
+    law:"경찰관 직무집행법 제2조·제3조 제1항",
+    viewTitles:["개념 분류의 문제","적법성의 문제"],
+    traditional:"어떤 작용이 실질적 의미의 경찰인지는 그 작용의 목적과 수단으로 판단합니다. 위험방지를 위해 사람을 정지시켰으므로 실질적 의미의 경찰에 해당하고, 경찰의 소관 사무이므로 형식적 의미에도 해당합니다. → 둘 다 해당",
+    modern:"경찰개념에 해당한다는 것과 그 조치가 적법하다는 것은 다른 문제입니다. 불심검문은 수상한 행동이나 그 밖의 주변 사정을 합리적으로 판단해 죄를 범했거나 범하려 한다고 의심할 만한 상당한 이유가 있는 사람에게 할 수 있습니다. AI가 표시한 구역을 지나갔다는 사정만으로 이 요건이 충족되는지는 따로 따져야 합니다.",
+    question:"AI의 예측은 경찰관의 '합리적 판단'의 근거가 될 수 있을까요? 된다면 어디까지일까요?" }
+];
+
+/* 오답 유형: 고른 답과 정답이 어긋난 방식에서 추정하는 개념적 오해. t=오해, fix=바로잡는 설명 */
+const MISCONCEPTIONS = {
+  officer:    { t:"경찰관이 하면 모두 실질적 경찰이라고 생각함", fix:"경찰관의 활동이라는 사실은 형식적 의미만 알려 줍니다. 실질적 의미는 그 작용이 네 표지를 충족하는지 따로 따져야 합니다." },
+  purposeOnly:{ t:"위험방지나 범죄예방 목적만으로 실질적 경찰이라고 판단함", fix:"목적은 네 표지 가운데 하나입니다. 국민에게 명령·강제하는 수단을 썼는지까지 확인해야 합니다." },
+  crime:      { t:"수사와 위험방지를 구별하지 않음", fix:"이미 일어난 범죄의 범인과 증거를 찾는 수사는 사법경찰 작용입니다. 장래의 위험을 막는 작용과 구별합니다." },
+  authority:  { t:"질서를 유지하는 활동이면 모두 경찰작용이라고 생각함", fix:"권한의 근거가 일반통치권인지 확인해야 합니다. 계약에 따른 경비, 국회나 법정 같은 조직 내부의 질서유지는 실질적 의미의 경찰과 구별합니다." },
+  name:       { t:"이름이나 하는 일이 경찰과 비슷하면 형식적 경찰이라고 생각함", fix:"형식적 의미는 보통경찰기관의 법정 소관 사무인지로만 판단합니다. '사법경찰', '수사', '경호', '경비'라는 이름은 기준이 아닙니다." },
+  include:    { t:"실질적 경찰이면 형식적 경찰이기도 하다고 생각함", fix:"다른 행정기관의 위험방지 명령은 실질적 의미에만 해당합니다. 두 개념은 포함관계가 아닙니다." },
+  orgOnly:    { t:"경찰기관이 하지 않으면 경찰작용이 아니라고 생각함", fix:"실질적 의미는 누가 하는지와 관계없이 작용의 성질로 판단합니다. 구청이나 보건당국의 위험방지 명령도 실질적 의미의 경찰입니다." },
+  skipOrg:    { t:"작용의 성질만 보고 조직 기준을 건너뜀", fix:"수사나 서비스처럼 실질적 의미에 해당하지 않는 활동도, 보통경찰기관의 소관 사무이면 형식적 의미의 경찰입니다." },
+  under:      { t:"네 표지를 충족하는데도 실질적 경찰에서 뺌", fix:"위험방지 목적, 장래지향, 일반통치권, 명령·강제를 모두 충족하면 경찰기관이 한 일이어도 실질적 의미의 경찰입니다. 두 개념은 겹칠 수 있습니다." }
+};
+
+/* 판단 이유 점검 질문(규칙 기반): 학생이 쓴 이유에 해당 기준의 낱말이 없으면 이 질문을 보여 줍니다 */
+const TUTOR_Q = {
+  org:"이 활동을 한 기관은 어디인가요? 법률이 보통경찰기관(경찰청·시도경찰청·경찰서)에 맡긴 사무인가요?",
+  purpose:"이 작용의 목적은 사회공공의 안녕과 질서에 대한 위험을 막는 것인가요, 아니면 형사책임을 묻거나 조직 내부의 질서를 지키는 것인가요?",
+  future:"이미 일어난 일에 대한 대응인가요, 앞으로 일어날 위험을 막는 것인가요?",
+  general:"이 권한은 어디에서 나오나요? 국민 일반을 상대로 한 일반통치권인가요, 계약이나 조직 내부의 권한인가요?",
+  power:"상대방에게 의무를 지우거나 강제한 것이 있나요? 상대방이 거절할 수 있었나요?"
+};
+
+/* AI 튜터 서버 주소. 비워 두면 같은 주소의 /api/tutor 를 찾아보고, 없으면 규칙 기반 점검만 씁니다.
+   웹앱과 서버를 다른 곳에 올렸다면 "https://서버주소/api/tutor" 를 적으세요. API 키는 서버에만 둡니다. */
+const TUTOR_ENDPOINT = "";
+
+/* 모드 C: 학습용으로 만든 오류 포함 답안 (실제 AI 출력이 아님)
+   err:true 인 문장이 오류. why 는 해설, tag 는 오답 유형(org=조직 기준, act=작용 기준, rel=두 개념의 관계) */
+const ESSAYS = [
+  { title:"답안 1", prompt:"질문: 형식적 의미의 경찰과 실질적 의미의 경찰은 어떤 관계인가요?", sentences:[
+    {t:"형식적 의미의 경찰은 실정법이 보통경찰기관에 맡긴 사무를 기준으로 하는 개념입니다.", err:false, why:"맞습니다. 조직을 기준으로 한 실정법적·제도적 개념입니다."},
+    {t:"실질적 의미의 경찰은 형식적 의미의 경찰보다 넓은 개념이어서, 형식적 의미의 경찰은 모두 실질적 의미의 경찰에 포함됩니다.", err:true, tag:"rel", why:"오류. 포함관계가 아닙니다. 범죄수사나 경찰서비스는 형식적 의미에만 해당하고, 위생·보건 위험방지는 실질적 의미에만 해당합니다."},
+    {t:"따라서 두 개념은 상호배타적입니다.", err:true, tag:"rel", why:"오류. 교통 위험방지처럼 두 개념에 모두 해당하는 영역이 있습니다. 바로 앞 문장과도 서로 모순됩니다."},
+    {t:"예를 들어 경찰관의 교통 위험방지 조치는 두 개념에 모두 해당합니다.", err:false, why:"맞습니다. 보통경찰기관의 사무이면서 위험방지를 위한 명령·강제 작용입니다."} ]},
+  { title:"답안 2", prompt:"질문: 실질적 의미의 경찰에서 '소극목적'이란 무엇인가요?", sentences:[
+    {t:"실질적 의미의 경찰은 공공의 안녕과 질서에 대한 위험을 방지하는 작용입니다.", err:false, why:"맞습니다. 위험방지가 핵심 목적입니다."},
+    {t:"소극목적이란 경찰이 되도록 소극적으로 활동해야 한다는 뜻입니다.", err:true, tag:"act", why:"오류. '소극'은 활동의 강도가 아니라 목적의 성격입니다. 이미 있는 안전을 위협하는 위험을 막는다는 뜻입니다."},
+    {t:"그래서 공공복리를 적극적으로 증진하는 작용도 실질적 의미의 경찰에 포함됩니다.", err:true, tag:"act", why:"오류. 새로운 복리를 늘리는 적극목적 작용은 복리행정이고, 전통적인 실질적 의미의 경찰에 포함되지 않습니다."},
+    {t:"붕괴 위험이 있는 건축물의 출입을 제한하는 것은 소극목적 작용의 예입니다.", err:false, why:"맞습니다. 기존의 안전을 위협하는 위험을 제거하는 작용입니다."} ]},
+  { title:"답안 3", prompt:"질문: 특별사법경찰은 실질적 의미의 경찰인가요?", sentences:[
+    {t:"구청 공무원이 위생상 위험을 막기 위해 내리는 시정명령은 실질적 의미의 경찰에 해당합니다.", err:false, why:"맞습니다. 협의의 행정경찰(위생경찰)입니다."},
+    {t:"같은 공무원이 특별사법경찰관리로서 하는 수사도, 이름에 '경찰'이 들어 있으므로 실질적 의미의 경찰에 해당합니다.", err:true, tag:"act", why:"오류. 수사는 이미 일어난 범죄에 대한 사법경찰 작용입니다. 장래의 위험방지가 아니므로 실질적 의미의 경찰이 아닙니다. 명칭은 기준이 아닙니다."},
+    {t:"경찰청 소속 수사관의 범죄수사는 형식적 의미의 경찰에 해당합니다.", err:false, why:"맞습니다. 수사는 보통경찰기관의 법정 임무입니다."},
+    {t:"분류할 때는 기관이나 사람이 아니라 개별 작용을 기준으로 살펴야 합니다.", err:false, why:"맞습니다. 같은 공무원도 작용에 따라 달리 분류됩니다."} ]},
+  { title:"답안 4", prompt:"질문: 어떤 활동이 형식적 의미의 경찰인지 어떻게 판단하나요?", sentences:[
+    {t:"형식적 의미의 경찰인지는 그 사람이 경찰 제복을 입었는지로 판단합니다.", err:true, tag:"org", why:"오류. 기준은 제복이 아니라 보통경찰기관의 법정 소관 사무인지입니다. 사복 수사관의 수사도 형식적 의미의 경찰입니다."},
+    {t:"중대범죄수사청 수사관의 수사는 경찰청의 수사와 같은 작용이므로 형식적 의미의 경찰에 해당합니다.", err:true, tag:"org", why:"오류. 작용이 같아도 보통경찰기관의 사무가 아니면 형식적 의미의 경찰이 아닙니다. 형식적 개념은 조직을 기준으로 합니다."},
+    {t:"형식적 의미의 경찰의 범위는 입법정책에 따라 나라와 시대마다 달라질 수 있습니다.", err:false, why:"맞습니다. 실정법이 조직과 사무를 어떻게 정하느냐에 달려 있습니다."},
+    {t:"실질적 의미의 경찰이라는 개념이 행정기관에 새로운 강제권한을 주는 것은 아니고, 권한 발동에는 개별 법률의 근거가 필요합니다.", err:false, why:"맞습니다. 강학상 분류 개념일 뿐, 수권 근거는 개별 법률입니다."} ]}
+];
+
+/* =====================================================================
+   2. 앱 로직  ―  아래는 수정하지 않아도 됩니다
+   ===================================================================== */
+const CRIT = [
+  {k:"purpose", label:"사회공공의 안녕·질서에 대한 위험방지가 목적이다", short:"위험방지 목적"},
+  {k:"future",  label:"장래를 향한 작용이다 (이미 일어난 범죄의 수사가 아니다)", short:"장래지향"},
+  {k:"general", label:"일반통치권에 근거한다 (계약이나 조직 내부 권한이 아니다)", short:"일반통치권"},
+  {k:"power",   label:"국민에게 명령·강제하는 수단을 쓴다", short:"명령·강제"}
+];
+const CHOICES = [
+  {v:"F", label:"형식적 경찰만", f:true,  s:false},
+  {v:"S", label:"실질적 경찰만", f:false, s:true},
+  {v:"B", label:"둘 다 해당",     f:true,  s:true},
+  {v:"N", label:"둘 다 해당하지 않음", f:false, s:false}
+];
+const ZONES = {F:"형식적 경찰만", B:"둘 다 해당(교집합)", S:"실질적 경찰만", N:"두 원의 바깥"};
+const zoneOf = c => c.formal ? (c.substantive===true ? "B":"F") : (c.substantive===true ? "S":"N");
+const OX = b => b===true ? "O" : b===false ? "X" : "견해 대립";
+const esc = s => String(s).replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const $ = (sel, el=document) => el.querySelector(sel);
+const app = $("#app");
+
+/* 학습 기록: 화면 내 변수로만 유지 (저장·전송 없음) */
+const S = {
+  tab:"A",
+  a:{ idx:0, choice:null, checks:{}, reason:"", done:{} },   // done[key] = {choice, formalOK, substOK, critMiss:[], misc:[], reason, ai, debate}
+  d:{ idx:0, choice:null, checks:{}, reason:"", done:{} },   // 심화 사례용 (구조는 a 와 같음)
+  b:{ cards:[], placed:[], sel:null },               // placed: {key, zone, ok, fOK, sOK}
+  c:{ idx:0, marks:{}, revealed:{} }                 // marks["e-s"] = true
+};
+
+function setTab(t){ S.tab=t; document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===t)); render(); window.scrollTo(0,0); }
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>setTab(b.dataset.tab)));
+
+function render(){ ({A:renderA,D:renderA,B:renderB,C:renderC,R:renderR})[S.tab](); }
+
+/* ---------- 모드 A: 사례 판단 / 모드 D: 심화 사례 (같은 화면, 사례 묶음만 다름) ---------- */
+function cur(){ return S.tab==="D" ? {list:ADV_CASES, a:S.d, adv:true} : {list:CASES, a:S.a, adv:false}; }
+function renderA(){
+  const {list,a,adv}=cur(), c=list[a.idx], done=a.done[c.key];
+  const chips = list.map((x,i)=>{
+    const d=a.done[x.key]; let cls="chip"+(i===a.idx?" cur":"");
+    if(d) cls += d.debate?" dbt":(d.formalOK&&d.substOK?" ok":" no");
+    return `<button class="${cls}" data-go="${i}" aria-label="사례 ${i+1}${x.type==="논쟁형"?" 논쟁형":""}">${i+1}${x.type==="논쟁형"?"*":""}</button>`;
+  }).join("");
+  let html = `<section class="card">
+    <div class="row"><h2 style="margin:0">${adv?"심화 사례":"사례 판단"}</h2><span class="tag">${a.idx+1} / ${list.length}</span>
+      <span class="tag ${c.type==="논쟁형"?"debate":""}">${c.type}</span><span class="tag">난이도 ${"●".repeat(c.level)}${"○".repeat(3-c.level)}</span></div>
+    <div class="chips" aria-label="사례 바로가기">${chips}</div>
+    <p class="hint" style="margin-bottom:0">${adv?"심화 사례는 하나의 정답보다 법적 해석이 중요한 문항입니다. 모두 채점하지 않습니다.":"* 표시는 정답을 하나로 채점하지 않는 논쟁형 문항입니다."}</p>
+  </section>
+  <section class="card">
+    <p class="case-text b" id="caseText">${esc(c.text)}</p>
+    <div class="opts" role="group" aria-label="분류 선택">${CHOICES.map(o=>{
+      let cls="opt"; const picked = (done?done.choice:a.choice)===o.v;
+      if(done && !done.debate){ const right = o.f===c.formal && o.s===c.substantive; if(right) cls+=" right"; else if(picked) cls+=" wrong"; }
+      else if(picked) cls+=" sel";
+      return `<button class="${cls}" data-v="${o.v}" ${done?"disabled":""} aria-pressed="${picked}"><span class="dot"></span><span>${o.label}</span></button>`;
+    }).join("")}</div>`;
+  if(!done){
+    html += `<div class="checks"><h3 style="margin:0">판단 근거 <span class="tag">선택</span></h3>
+      <p class="hint">이 사례에 해당한다고 본 기준에 체크하세요. 체크하면 어느 기준에서 틀렸는지 더 자세히 알려 드립니다.</p>
+      <div class="grp">① 누가 수행하는가 — 조직 기준</div>
+      <label class="chk"><input type="checkbox" data-ck="org" ${a.checks.org?"checked":""}><span>보통경찰기관(경찰청·시도경찰청·경찰서 등)의 법정 소관 사무다</span></label>
+      <div class="grp">② 어떤 작용인가 — 작용 기준 (네 가지를 모두 충족해야 실질적 의미의 경찰)</div>
+      ${CRIT.map(k=>`<label class="chk"><input type="checkbox" data-ck="${k.k}" ${a.checks[k.k]?"checked":""}><span>${k.label}</span></label>`).join("")}
+      <div class="grp"><label for="reasonA">③ 그렇게 판단한 이유를 한 문장으로</label></div>
+      <textarea id="reasonA" class="reason" maxlength="200" rows="2" placeholder="예: 구청은 경찰기관이 아니지만, 위험을 막으려고 명령한 것이므로 실질적 경찰이다.">${esc(a.reason||"")}</textarea>
+      <p class="hint">${TUTOR.url
+        ? "이유를 적으면 AI 튜터가 빠뜨린 판단 기준을 질문으로 짚어 줍니다. 적은 문장은 AI 응답을 만들기 위해 서버로 전송되니, 이름 같은 개인정보는 쓰지 마세요."
+        : "이유를 적으면 빠뜨린 판단 기준을 질문으로 짚어 드립니다. (미리 정해 둔 규칙으로 점검하며, AI가 답하는 것은 아닙니다.)"}</p>
+    </div>
+    <div class="actions"><button class="btn" id="submitA" ${a.choice?"":"disabled"}>판단 제출</button></div>`;
+  }
+  html += `</section>`;
+  if(done) html += feedbackA(c, done, list, a);
+  app.innerHTML = html;
+  app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>goCase(+b.dataset.go));
+  if(!done){
+    app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{ a.choice=b.dataset.v; renderA(); });
+    app.querySelectorAll("[data-ck]").forEach(i=>i.onchange=()=>{ a.checks[i.dataset.ck]=i.checked; });
+    const ta=$("#reasonA"); if(ta) ta.oninput=()=>{ a.reason=ta.value; };
+    const sb=$("#submitA"); if(sb) sb.onclick=submitA;
+  } else {
+    const n=$("#nextA"); if(n) n.onclick=()=>{ if(a.idx<list.length-1) goCase(a.idx+1); else setTab("R"); };
+    const r=$("#retryA"); if(r) r.onclick=()=>{ delete a.done[c.key]; a.choice=null; a.checks={}; a.reason=""; renderA(); };
+    app.querySelectorAll("[data-see]").forEach(b=>b.onclick=()=>goCase(list.findIndex(x=>x.key===b.dataset.see)));
+  }
+}
+function goCase(i){ const {list,a}=cur(); if(i<0||i>=list.length) return; a.idx=i; a.choice=null; a.checks={}; a.reason=""; renderA(); window.scrollTo(0,0); }
+function submitA(){
+  const {list,a}=cur(), c=list[a.idx], o=CHOICES.find(x=>x.v===a.choice);
+  const usedChecks = Object.values(a.checks).some(Boolean);
+  const rec = { choice:a.choice, checks:usedChecks?{...a.checks}:null, debate:c.type==="논쟁형" };
+  rec.formalOK = o.f===c.formal;
+  rec.substOK  = c.substantive==="debate" ? true : o.s===c.substantive;
+  rec.critMiss = [];
+  if(usedChecks){
+    if(!!a.checks.org !== c.formal) rec.critMiss.push("org");
+    CRIT.forEach(k=>{ const truth=c.criteria[k.k]; if(truth===true||truth===false){ if(!!a.checks[k.k]!==truth) rec.critMiss.push(k.k); } });
+  }
+  rec.misc = diagnose(c, o.f, o.s);
+  rec.reason = (a.reason||"").trim().slice(0,200) || null;
+  rec.ai = (rec.reason && TUTOR.url) ? {state:"loading"} : null;
+  a.done[c.key]=rec; a.reason=""; renderA();
+  const fb=$("#feedback"); if(fb) fb.scrollIntoView({behavior:"smooth",block:"start"});
+  if(rec.ai) askTutor(c, rec);
+}
+
+/* ---------- 오답 유형 진단: 고른 답과 정답의 차이에서 가능한 오해를 추정 ---------- */
+function diagnose(c, f, s){
+  if(c.type==="논쟁형") return [];
+  const out=[], sub=c.substantive===true;
+  if(s!==sub){
+    if(s){
+      if(c.formal && f) out.push("officer");
+      out.push(c.criteria.future===false ? "crime" : c.criteria.general===false ? "authority" : "purposeOnly");
+    } else out.push(c.formal ? "under" : "orgOnly");
+  }
+  if(f!==c.formal) out.push(f ? (sub ? "include" : "name") : "skipOrg");
+  return out;
+}
+function miscHTML(ids){
+  if(!ids || !ids.length) return "";
+  return `<div class="note misc"><span class="b">오답 유형 진단</span> — 혹시 이렇게 생각하지 않았나요?
+    <ul>${ids.map(id=>`<li><span class="b">${esc(MISCONCEPTIONS[id].t)}</span><br>${esc(MISCONCEPTIONS[id].fix)}</li>`).join("")}</ul></div>`;
+}
+
+/* ---------- 판단 이유 점검: 규칙 기반(내장) + AI 튜터(서버가 연결된 경우만) ---------- */
+const TUTOR = { url:null };
+const TUTOR_KW = {
+  org:/경찰청|경찰서|경찰기관|지구대|소속|소관|기관|구청|조직|누가|경찰관이|경찰이 /,
+  purpose:/위험|예방|방지|안전|질서|보호|목적/,
+  future:/장래|미리|앞으로|이미|과거|사후|수사|일어난|일어나기/,
+  general:/통치권|계약|내부|공권력|국민 일반/,
+  power:/명령|강제|권력|의무|제한|금지|단속|동의|요청|서비스|권고/
+};
+function ruleTutor(c, d){
+  const names={org:"조직 기준", purpose:"위험방지 목적", future:"장래지향", general:"일반통치권", power:"명령·강제"};
+  const mentioned=Object.keys(TUTOR_KW).filter(k=>TUTOR_KW[k].test(d.reason));
+  const order=[]; const add=k=>{ if(!order.includes(k)) order.push(k); };
+  if(!d.formalOK) add("org");
+  CRIT.forEach(k=>{ const v=c.criteria[k.k]; if(v===false||v==="debate") add(k.k); });   // 이 사례의 결론을 가르는 표지 먼저
+  ["org","purpose","future","general","power"].forEach(add);
+  /* 틀린 기준의 질문은 낱말을 언급했더라도 먼저 묻는다 */
+  const forced=[]; if(!d.debate){ if(!d.formalOK) forced.push("org"); if(!d.substOK){ const k=CRIT.find(x=>c.criteria[x.k]===false); if(k) forced.push(k.k); } }
+  const missing=[...forced, ...order.filter(k=>!mentioned.includes(k) && !forced.includes(k))].slice(0,2);
+  const questions = missing.length ? missing.map(k=>TUTOR_Q[k])
+    : ["조직 기준과 네 표지를 모두 언급했습니다. 그중 이 사례의 결론을 가른 기준은 무엇인가요? 위 해설과 비교해 보세요."];
+  return { mentioned:mentioned.map(k=>names[k]), questions };
+}
+async function askTutor(c, rec){
+  const ctl=new AbortController(), timer=setTimeout(()=>ctl.abort(), 40000);
+  try{
+    const r=await fetch(TUTOR.url,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
+      body:JSON.stringify({caseKey:c.key, choice:rec.choice, reason:rec.reason})});
+    const j=await r.json().catch(()=>null);
+    rec.ai = (r.ok && j && j.text) ? {state:"ok", text:String(j.text)} : {state:"fail"};
+  }catch(_){ rec.ai={state:"fail"}; }
+  clearTimeout(timer);
+  if((S.tab==="A"||S.tab==="D")){ const {list,a}=cur(); if(list[a.idx]===c && a.done[c.key]===rec) renderA(); }
+}
+function tutorHTML(c, d){
+  if(!d.reason) return "";
+  const mine=`<p class="mine">내가 쓴 이유: “${esc(d.reason)}”</p>`;
+  if(d.ai && d.ai.state==="loading")
+    return `<div class="tutor"><h3><span>AI 튜터</span><span class="tag">Claude 실시간 응답</span></h3>${mine}<p aria-live="polite">AI 튜터가 이유를 읽고 있습니다…</p></div>`;
+  if(d.ai && d.ai.state==="ok")
+    return `<div class="tutor"><h3><span>AI 튜터의 질문</span><span class="tag">Claude 실시간 응답</span></h3>${mine}
+      <p class="ai" aria-live="polite">${esc(d.ai.text).replace(/\n+/g,"<br>")}</p>
+      <p class="hint" style="margin-bottom:0">AI 응답은 참고용입니다. 분류와 해설은 위에 표시된 검증된 내용을 기준으로 하세요.</p></div>`;
+  const r=ruleTutor(c, d);
+  return `<div class="tutor"><h3><span>판단 이유 점검 질문</span><span class="tag">규칙 기반 · AI 아님</span></h3>${mine}
+    ${d.ai&&d.ai.state==="fail"?`<p class="hint">AI 튜터에 연결하지 못해 규칙 기반 점검으로 대신했습니다.</p>`:""}
+    <p class="hint">이유에서 언급한 기준: ${r.mentioned.length?esc(r.mentioned.join(", ")):"찾지 못했습니다"}</p>
+    <ul>${r.questions.map(q=>`<li>${esc(q)}</li>`).join("")}</ul></div>`;
+}
+
+function feedbackA(c, d, list, a){
+  const o=CHOICES.find(x=>x.v===d.choice);
+  const answer = CHOICES.find(x=>x.f===c.formal && x.s===c.substantive);
+  let verdict;
+  if(d.debate){
+    verdict = `<div class="verdict dbt b">논쟁형 문항 — 하나의 정답으로 채점하지 않습니다<small>선택한 답: ${o.label}. 아래 두 관점을 비교해 보세요.</small></div>`;
+  } else if(d.formalOK && d.substOK){
+    verdict = `<div class="verdict ok b">정답입니다 — ${answer.label}<small>두 기준을 모두 바르게 적용했습니다.</small></div>`;
+  } else {
+    const where = !d.formalOK && !d.substOK ? "조직 기준과 작용 기준 모두에서" : !d.formalOK ? "조직 기준(누가 수행하는가)에서" : "작용 기준(어떤 작용인가)에서";
+    verdict = `<div class="verdict no b">${where} 틀렸습니다<small>선택한 답: ${o.label} → 정답: ${answer.label}</small></div>`;
+  }
+  const ck = d.checks;
+  const critRows = CRIT.map(k=>{
+    const truth=c.criteria[k.k];
+    const tTxt = truth===true?"충족":truth===false?"불충족":truth==="debate"?"견해 대립":"—";
+    const mine = ck ? (ck[k.k]?"체크":"미체크") : "";
+    const bad = d.critMiss.includes(k.k);
+    return `<tr class="${bad?"bad":""}"><td>${k.short}</td><td class="c b">${tTxt}</td>${ck?`<td class="c">${mine}${bad?" ✕":""}</td>`:""}</tr>`;
+  }).join("");
+  const consistency = (ck && !d.debate && o.s && CRIT.some(k=>!ck[k.k]))
+    ? `<div class="note">선택한 답과 체크한 근거가 서로 맞지 않습니다. 실질적 의미의 경찰이라고 답하려면 네 표지를 모두 충족한다고 보아야 합니다.</div>` : "";
+  let html = `<section class="card" id="feedback">${verdict}
+    <div class="two">
+      <div class="panel f ${!d.debate&&!d.formalOK?"miss":""}">
+        <h3><span>① 조직 기준 — 형식적 의미</span><span class="ox">${OX(c.formal)}</span></h3>
+        <p>${esc(c.formalWhy)}</p>
+        ${!d.debate&&!d.formalOK?`<div class="misslabel b">여기서 틀렸습니다: 형식적 의미를 ${OX(o.f)}로 판단했습니다.</div>`:""}
+        ${ck&&d.critMiss.includes("org")?`<div class="misslabel">근거 체크: '보통경찰기관의 소관 사무' 항목을 ${ck.org?"체크했지만 해당하지 않습니다":"체크하지 않았지만 해당합니다"}.</div>`:""}
+      </div>
+      <div class="panel s ${!d.debate&&!d.substOK?"miss":""}">
+        <h3><span>② 작용 기준 — 실질적 의미</span><span class="ox">${OX(c.substantive==="debate"?null:c.substantive)}</span></h3>
+        <p>${esc(c.substantiveWhy)}</p>
+        ${!d.debate&&!d.substOK?`<div class="misslabel b">여기서 틀렸습니다: 실질적 의미를 ${OX(o.s)}로 판단했습니다.</div>`:""}
+        <table class="crit"><tr><th>표지</th><th style="text-align:center">이 사례</th>${ck?`<th style="text-align:center">내 체크</th>`:""}</tr>${critRows}</table>
+      </div>
+    </div>${consistency}${miscHTML(d.misc)}`;
+  if(c.type==="논쟁형"){
+    const vt=c.viewTitles||["전통적 개념에 따르면","현대적 논의에 따르면"];
+    html += `<div class="two" style="margin-top:12px">
+      <div class="panel"><h3>${esc(vt[0])}</h3><p>${esc(c.traditional)}</p></div>
+      <div class="panel"><h3>${esc(vt[1])}</h3><p>${esc(c.modern)}</p></div></div>
+      <div class="q"><small>생각해 볼 질문</small><span class="b">${esc(c.question)}</span></div>`;
+  }
+  html += tutorHTML(c, d);
+  html += `<p class="law"><b>근거 법령</b> ${esc(c.law)}</p>`;
+  if(c.see){ const o2=list.find(x=>x.key===c.see); html += `<p class="law" style="margin-top:4px"><b>함께 볼 사례</b> <button class="linkbtn" data-see="${c.see}">${esc(o2.short)}</button> — 같은 공무원의 다른 작용입니다.</p>`; }
+  html += `<div class="actions"><button class="btn" id="nextA">${a.idx<list.length-1?"다음 사례":"결과 보기"}</button><button class="btn ghost" id="retryA">다시 풀기</button></div></section>`;
+  return html;
+}
+
+/* ---------- 모드 B: 벤다이어그램 배치 ---------- */
+const VG = {w:360,h:250,l:{cx:130,cy:125},r:{cx:230,cy:125},rx:100,ry:95};
+function newRound(){
+  const pool = CASES.filter(c=>c.type==="확정형");
+  const by = {F:[],B:[],S:[],N:[]}; pool.forEach(c=>by[zoneOf(c)].push(c));
+  const pick=[]; Object.values(by).forEach(arr=>{ shuffle(arr); pick.push(...arr.slice(0,2)); });
+  S.b.cards = shuffle(pick).map(c=>c.key); S.b.placed=[]; S.b.sel=null;
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function vennSVG(){
+  const g=VG, yTop=(g.l.cy-g.ry*Math.sqrt(1-Math.pow(50/g.rx,2))).toFixed(1), yBot=(2*g.l.cy-yTop).toFixed(1);
+  const cnt = z => S.b.placed.filter(p=>zoneOf(CASES.find(c=>c.key===p.key))===z).length;
+  return `<svg class="venn" id="venn" viewBox="0 0 ${g.w} ${g.h}" role="img" aria-label="벤다이어그램. 왼쪽 원은 형식적 의미의 경찰, 오른쪽 원은 실질적 의미의 경찰">
+    <rect id="zN" x="2" y="2" width="${g.w-4}" height="${g.h-4}" rx="12" fill="#fff" stroke="#9AA5B5" stroke-dasharray="5 4"/>
+    <ellipse id="zF" cx="${g.l.cx}" cy="${g.l.cy}" rx="${g.rx}" ry="${g.ry}" fill="#2F6FD0" fill-opacity=".22" stroke="#2F6FD0" stroke-width="2"/>
+    <ellipse id="zS" cx="${g.r.cx}" cy="${g.r.cy}" rx="${g.rx}" ry="${g.ry}" fill="#0E9C9C" fill-opacity=".22" stroke="#0E9C9C" stroke-width="2"/>
+    <path id="zB" d="M180,${yTop} A${g.rx},${g.ry} 0 0,1 180,${yBot} A${g.rx},${g.ry} 0 0,1 180,${yTop}Z" fill="#12264A" fill-opacity=".88"/>
+    <text x="84" y="112" text-anchor="middle" font-size="13" fill="#1F56AD" font-weight="700">형식적</text>
+    <text x="84" y="128" text-anchor="middle" font-size="13" fill="#1F56AD" font-weight="700">경찰만</text>
+    <text x="84" y="150" text-anchor="middle" font-size="12" fill="#1F56AD">${cnt("F")}개</text>
+    <text x="180" y="120" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">둘 다</text>
+    <text x="180" y="142" text-anchor="middle" font-size="12" fill="#fff">${cnt("B")}개</text>
+    <text x="276" y="112" text-anchor="middle" font-size="13" fill="#087878" font-weight="700">실질적</text>
+    <text x="276" y="128" text-anchor="middle" font-size="13" fill="#087878" font-weight="700">경찰만</text>
+    <text x="276" y="150" text-anchor="middle" font-size="12" fill="#087878">${cnt("S")}개</text>
+    <text x="14" y="22" font-size="12" fill="#5B6676">두 원의 바깥 · ${cnt("N")}개</text>
+  </svg>`;
+}
+function zoneAt(clientX, clientY){
+  const svg=$("#venn"); if(!svg) return null; const r=svg.getBoundingClientRect();
+  if(clientX<r.left||clientX>r.right||clientY<r.top||clientY>r.bottom) return null;
+  const x=(clientX-r.left)/r.width*VG.w, y=(clientY-r.top)/r.height*VG.h;
+  const inE = e => Math.pow((x-e.cx)/VG.rx,2)+Math.pow((y-e.cy)/VG.ry,2)<=1;
+  const L=inE(VG.l), R=inE(VG.r); return L&&R?"B":L?"F":R?"S":"N";
+}
+function renderB(){
+  const b=S.b; if(!b.cards.length && !b.placed.length) newRound();
+  const total=b.cards.length+b.placed.length, okN=b.placed.filter(p=>p.ok).length;
+  app.innerHTML = `<section class="card">
+    <div class="row"><h2 style="margin:0">벤다이어그램 배치</h2><span class="tag">${b.placed.length} / ${total}</span><span class="tag">정답 ${okN}</span></div>
+    <p class="lead" style="margin-top:6px">카드를 끌어서 놓거나, 카드를 누른 뒤 영역을 누르세요.</p>
+    <div class="venn-wrap">
+      <div>${vennSVG()}</div>
+      <div>
+        <div class="pool" id="pool">${b.cards.map(k=>{const c=CASES.find(x=>x.key===k);return `<button class="vcard ${b.sel===k?"sel":""}" data-key="${k}" aria-pressed="${b.sel===k}">${esc(c.short)}</button>`;}).join("")||`<p class="b" style="margin:0">모든 카드를 배치했습니다.</p>`}</div>
+        ${b.cards.length?"":`<div class="actions"><button class="btn" id="againB">새 카드로 다시</button><button class="btn ghost" id="toR">결과 보기</button></div>`}
+        <ul class="vlog" id="vlog" aria-live="polite">${b.placed.slice().reverse().map(p=>{const c=CASES.find(x=>x.key===p.key);const z=zoneOf(c);
+          return `<li class="${p.ok?"ok":"no"}"><span class="b">${p.ok?"정답":"오답"} · ${esc(c.short)}</span><br>${p.ok?"":`'${ZONES[p.zone]}'에 놓았습니다. `}정답은 <span class="b">${ZONES[z]}</span>. ${esc(oneLine(c))}</li>`;}).join("")}</ul>
+      </div>
+    </div></section>`;
+  const svg=$("#venn");
+  svg.addEventListener("click",e=>{ if(b.sel){ const z=zoneAt(e.clientX,e.clientY); if(z) place(b.sel,z); } });
+  app.querySelectorAll(".vcard").forEach(el=>bindCard(el));
+  const ag=$("#againB"); if(ag) ag.onclick=()=>{ newRound(); renderB(); };
+  const tr=$("#toR"); if(tr) tr.onclick=()=>setTab("R");
+}
+function oneLine(c){
+  const z=zoneOf(c);
+  if(z==="B") return "보통경찰기관의 사무이면서, 위험방지를 위한 명령·강제 작용입니다.";
+  if(z==="S") return "보통경찰기관은 아니지만, 위험방지를 위한 명령·강제 작용입니다(협의의 행정경찰).";
+  if(z==="F") return c.criteria.purpose===false ? "보통경찰기관의 사무이지만, 이미 일어난 범죄에 대한 사법경찰 작용입니다." : "보통경찰기관의 사무이지만, 명령·강제가 없는 비권력적 활동입니다.";
+  if(c.criteria.general===false) return "보통경찰기관도 아니고, 일반통치권에 근거한 작용도 아닙니다.";
+  return "보통경찰기관의 사무가 아니고, 위험방지가 아닌 사법경찰 작용(수사)입니다.";
+}
+function place(key, zone){
+  const b=S.b, c=CASES.find(x=>x.key===key), z=zoneOf(c);
+  const f = zone==="F"||zone==="B", s = zone==="S"||zone==="B";
+  b.placed.push({key, zone, ok:zone===z, fOK:f===c.formal, sOK:s===(c.substantive===true), misc:diagnose(c,f,s)});
+  b.cards=b.cards.filter(k=>k!==key); b.sel=null; renderB();
+  const el=$("#z"+z); if(el) el.classList.add("zonepulse");
+}
+function bindCard(el){
+  let start=null, ghost=null, dragging=false;
+  el.addEventListener("pointerdown",e=>{ start={x:e.clientX,y:e.clientY}; dragging=false; try{el.setPointerCapture(e.pointerId);}catch(_){} });
+  el.addEventListener("pointermove",e=>{
+    if(!start) return;
+    if(!dragging && Math.hypot(e.clientX-start.x,e.clientY-start.y)>8){
+      dragging=true; ghost=el.cloneNode(true); ghost.classList.add("ghost"); document.body.appendChild(ghost); el.style.opacity=".35";
+    }
+    if(dragging){ ghost.style.left=e.clientX+"px"; ghost.style.top=e.clientY+"px"; e.preventDefault(); }
+  });
+  const end=e=>{
+    if(!start) return; const wasDrag=dragging; start=null; dragging=false;
+    if(ghost){ ghost.remove(); ghost=null; } el.style.opacity="";
+    if(wasDrag && e.type==="pointerup"){ const z=zoneAt(e.clientX,e.clientY); if(z) place(el.dataset.key,z); }
+    else if(!wasDrag && e.type==="pointerup"){ S.b.sel = S.b.sel===el.dataset.key ? null : el.dataset.key; renderB(); }
+  };
+  el.addEventListener("pointerup",end); el.addEventListener("pointercancel",end);
+  el.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); S.b.sel = S.b.sel===el.dataset.key?null:el.dataset.key; renderB(); } });
+}
+
+/* ---------- 모드 C: AI 답안 비평 ---------- */
+function renderC(){
+  const s=S.c, e=ESSAYS[s.idx], total=e.sentences.filter(x=>x.err).length;
+  const found=e.sentences.filter((x,i)=>x.err && s.marks[s.idx+"-"+i]).length, rev=s.revealed[s.idx];
+  app.innerHTML = `<section class="card">
+    <div class="row"><h2 style="margin:0">AI 답안 비평</h2><span class="tag">${s.idx+1} / ${ESSAYS.length}</span><span class="tag">오류 ${found} / ${total} 발견</span></div>
+    <div class="chips">${ESSAYS.map((x,i)=>`<button class="chip ${i===s.idx?"cur":""}" data-e="${i}">${i+1}</button>`).join("")}</div>
+  </section>
+  <section class="card">
+    <div class="banner"><span class="b">학습용으로 만든 오류 포함 답안</span> — 생성형 AI가 쓴 것처럼 꾸민 예시이며, 실제 AI 출력이 아닙니다. 오류가 있는 문장을 찾아 누르세요.</div>
+    <p class="lead b" style="color:var(--navy)">${esc(e.prompt)}</p>
+    <p class="essay">${e.sentences.map((x,i)=>{ const m=s.marks[s.idx+"-"+i]; const cls = m?(x.err?"err":"fine"):(rev&&x.err?"reveal":""); return `<button class="sent ${cls}" data-s="${i}">${esc(x.t)}</button> `; }).join("")}</p>
+    <div class="fb" aria-live="polite">${e.sentences.map((x,i)=>{ const m=s.marks[s.idx+"-"+i]; if(!m && !(rev&&x.err)) return ""; const cls=m?(x.err?"err":"fine"):"reveal";
+      return `<div class="${cls}"><span class="b">${i+1}번째 문장 · ${x.err?(m?"오류를 찾았습니다":"놓친 오류"):"이 문장은 맞습니다"}</span><br>${esc(x.why)}</div>`; }).join("")}</div>
+    <div class="actions">
+      <button class="btn ghost" id="revealC" ${rev?"disabled":""}>정답 보기</button>
+      <button class="btn" id="nextC">${s.idx<ESSAYS.length-1?"다음 답안":"결과 보기"}</button>
+    </div>
+  </section>`;
+  app.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{ s.idx=+b.dataset.e; renderC(); });
+  app.querySelectorAll(".sent").forEach(b=>b.onclick=()=>{ s.marks[s.idx+"-"+b.dataset.s]=true; renderC(); });
+  $("#revealC").onclick=()=>{ s.revealed[s.idx]=true; renderC(); };
+  $("#nextC").onclick=()=>{ if(s.idx<ESSAYS.length-1){ s.idx++; renderC(); window.scrollTo(0,0);} else setTab("R"); };
+}
+
+/* ---------- 결과 ---------- */
+function renderR(){
+  const A=[...Object.entries(S.a.done), ...Object.entries(S.d.done)], graded=A.filter(([k,d])=>!d.debate), aOK=graded.filter(([k,d])=>d.formalOK&&d.substOK).length;
+  const debated=A.length-graded.length;
+  const B=S.b.placed, bOK=B.filter(p=>p.ok).length;
+  let cErr=0,cFound=0,cFalse=0; const tagMiss={org:0,act:0,rel:0};
+  ESSAYS.forEach((e,ei)=>e.sentences.forEach((x,si)=>{ const m=S.c.marks[ei+"-"+si]; const touched = Object.keys(S.c.marks).some(k=>k.startsWith(ei+"-"))||S.c.revealed[ei];
+    if(x.err){ if(touched){ cErr++; if(m) cFound++; else tagMiss[x.tag]++; } } else if(m) cFalse++; }));
+  let org = graded.filter(([k,d])=>!d.formalOK).length + B.filter(p=>!p.fOK).length + tagMiss.org;
+  let act = graded.filter(([k,d])=>!d.substOK).length + B.filter(p=>!p.sOK).length + tagMiss.act;
+  const critCount={}; A.forEach(([k,d])=>d.critMiss.forEach(c=>critCount[c]=(critCount[c]||0)+1));
+  const miscCount={}; [...graded.map(([k,d])=>d.misc||[]), ...B.map(p=>p.misc||[])].forEach(ids=>ids.forEach(id=>miscCount[id]=(miscCount[id]||0)+1));
+  const miscTop=Object.entries(miscCount).sort((x,y)=>y[1]-x[1]).slice(0,3);
+  const miscBlock = miscTop.length ? `<h3 style="margin-top:14px">오답 유형 진단</h3>
+    <p class="lead">틀린 문항에서 고른 답을 보고 추정한 것입니다. 해당하는지 스스로 확인해 보세요.</p>
+    ${miscTop.map(([id,n])=>`<div class="advice" style="background:var(--no-soft)"><span class="b">${esc(MISCONCEPTIONS[id].t)}</span> <span class="tag">${n}회</span><br>${esc(MISCONCEPTIONS[id].fix)}</div>`).join("")}` : "";
+  const any = A.length+B.length+cErr>0;
+  const pct=(a,b)=>b?Math.round(a/b*100):0;
+  const totalOK=aOK+bOK+cFound, totalN=graded.length+B.length+cErr;
+  let advice="";
+  if(!any) advice=`<div class="advice" style="background:var(--navy-soft)">아직 푼 문제가 없습니다. '사례 판단'부터 시작해 보세요.</div>`;
+  else {
+    if(org>act && org>0) advice+=`<div class="advice" style="background:var(--blue-soft)"><span class="b">조직 기준에서 자주 틀림</span><br>'누가 수행하는가'를 다시 보세요. 형식적 의미의 경찰은 제복이나 명칭이 아니라 <span class="b">보통경찰기관의 법정 소관 사무</span>인지로 판단합니다. 구청·보건당국·중대범죄수사청·국회·법원은 보통경찰기관이 아닙니다.</div>`;
+    else if(act>org && act>0) advice+=`<div class="advice" style="background:var(--teal-soft)"><span class="b">작용 기준에서 자주 틀림</span><br>'어떤 작용인가'를 다시 보세요. 실질적 의미의 경찰은 <span class="b">위험방지 목적 · 장래지향 · 일반통치권 · 명령·강제</span>를 모두 충족해야 합니다. 수사(이미 일어난 범죄)와 서비스(명령·강제 없음)는 여기서 빠집니다.</div>`;
+    else if(org+act>0) advice+=`<div class="advice" style="background:var(--navy-soft)"><span class="b">두 기준에서 비슷하게 틀림</span><br>사례마다 ① 누가 수행하는가 ② 어떤 작용인가를 따로 판단한 뒤 합치는 순서로 다시 풀어 보세요.</div>`;
+    else advice+=`<div class="advice" style="background:var(--ok-soft)"><span class="b">두 기준을 모두 안정적으로 적용하고 있습니다.</span><br>논쟁형 문항(귀가 지원, AI 영상분석)에서 전통적 개념의 한계를 생각해 보세요.</div>`;
+    if(tagMiss.rel>0) advice+=`<div class="advice" style="background:var(--navy-soft)"><span class="b">두 개념의 관계 복습</span><br>두 개념은 포함관계도, 상호배타 관계도 아닙니다. 벤다이어그램 배치 모드로 겹치는 영역과 겹치지 않는 영역을 확인하세요.</div>`;
+    const top=Object.entries(critCount).sort((a,b)=>b[1]-a[1])[0];
+    if(top){ const name = top[0]==="org"?"보통경찰기관의 소관 사무":CRIT.find(k=>k.k===top[0]).short; advice+=`<div class="advice" style="background:#fff;border:1px dashed #9AA5B5">근거 체크에서 가장 자주 어긋난 항목: <span class="b">${name}</span> (${top[1]}회)</div>`; }
+  }
+  app.innerHTML = `<section class="card">
+    <h2>학습 결과</h2>
+    <div class="stats">
+      <div class="stat"><div class="n b">${any?pct(totalOK,totalN)+"%":"–"}</div><div class="l">전체 정답률 (${totalOK}/${totalN})</div></div>
+      <div class="stat"><div class="n b" style="color:var(--blue)">${org}</div><div class="l">조직 기준 오답</div></div>
+      <div class="stat"><div class="n b" style="color:var(--teal)">${act}</div><div class="l">작용 기준 오답</div></div>
+    </div>
+    <div style="margin-top:14px">
+      <div class="row" style="justify-content:space-between"><span>사례 판단</span><span class="lead" style="margin:0">${aOK} / ${graded.length}${debated?` · 논쟁형 ${debated}개는 채점 제외`:""}</span></div>
+      <div class="bar"><i style="width:${pct(aOK,graded.length)}%;background:var(--navy)"></i></div>
+      <div class="row" style="justify-content:space-between"><span>벤다이어그램 배치</span><span class="lead" style="margin:0">${bOK} / ${B.length}</span></div>
+      <div class="bar"><i style="width:${pct(bOK,B.length)}%;background:var(--blue)"></i></div>
+      <div class="row" style="justify-content:space-between"><span>AI 답안 비평 (오류 발견)</span><span class="lead" style="margin:0">${cFound} / ${cErr}${cFalse?` · 맞는 문장을 오류로 지목 ${cFalse}회`:""}</span></div>
+      <div class="bar"><i style="width:${pct(cFound,cErr)}%;background:var(--teal)"></i></div>
+    </div>
+    ${miscBlock}
+    <h3 style="margin-top:14px">복습 안내</h3>${advice}
+    <div class="actions"><button class="btn ghost" id="resetAll">기록 지우고 처음부터</button></div>
+  </section>`;
+  $("#resetAll").onclick=()=>{ S.a={idx:0,choice:null,checks:{},reason:"",done:{}}; S.d={idx:0,choice:null,checks:{},reason:"",done:{}}; S.b={cards:[],placed:[],sel:null}; S.c={idx:0,marks:{},revealed:{}}; setTab("A"); };
+}
+
+/* 주소 뒤에 #case=6 처럼 붙이면 해당 사례로 바로 이동 (시연용) */
+(function init(){
+  const m=location.hash.match(/case=(\d+)/); if(m){ const i=+m[1]-1; if(i>=0&&i<CASES.length) S.a.idx=i; }
+  const t=location.hash.match(/tab=([ABCDR])/); if(t) S.tab=t[1];
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===S.tab));
+  render();
+  /* AI 튜터 서버가 연결되어 있는지 확인. 연결되지 않으면 규칙 기반 점검만 사용 */
+  const on=url=>{ TUTOR.url=url; $("#aiNote").textContent="AI 튜터 사용 중(판단 이유 문장만 서버로 전송). 분류와 해설은 사전에 검증해 내장한 내용"; if(S.tab==="A"||S.tab==="D") render(); };
+  if(TUTOR_ENDPOINT) on(TUTOR_ENDPOINT);
+  else if(/^https?:$/.test(location.protocol))
+    fetch("api/health").then(r=>r.ok?r.json():null).then(j=>{ if(j && j.tutor) on("api/tutor"); }).catch(()=>{});
+})();
+</script>
+</body>
+</html>
